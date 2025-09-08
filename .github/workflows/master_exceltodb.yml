@@ -27,13 +27,13 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish ./ExcelFileToDB/ExcelFileToDB.csproj -c Release -o ./publish
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: dotnet-app
-          path: ./publish
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
     runs-on: ubuntu-latest
@@ -43,20 +43,14 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: dotnet-app
-          path: ./publish
-      - name: List downloaded files
-        run: ls -R ./publish
-        
+          name: .net-app
+      
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'exceltodb'
           slot-name: 'Production'
-          package: ./publish
+          package: .
 
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_72438E602BB64CAC894B3D9424D755BA }}
-
-
-
