@@ -33,7 +33,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ./publish
 
   deploy:
     runs-on: ubuntu-latest
@@ -51,6 +51,7 @@ jobs:
         with:
           app-name: 'exceltodb'
           slot-name: 'Production'
-          package: ./.net-app
+          package: ./publish
 
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_72438E602BB64CAC894B3D9424D755BA }}
+
