@@ -32,7 +32,7 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: .net-app
+          name: dotnet-app
           path: ./publish
 
   deploy:
@@ -43,8 +43,11 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: .net-app
-      
+          name: dotnet-app
+          path: ./publish
+      - name: List downloaded files
+        run: ls -R ./publish
+        
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
@@ -54,4 +57,5 @@ jobs:
           package: ./publish
 
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_72438E602BB64CAC894B3D9424D755BA }}
+
 
