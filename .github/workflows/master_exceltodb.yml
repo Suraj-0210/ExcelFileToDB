@@ -27,7 +27,7 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish ./ExcelFileToDB/ExcelFileToDB.csproj -c Release -o ./publish
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -57,5 +57,6 @@ jobs:
           package: ./publish
 
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_72438E602BB64CAC894B3D9424D755BA }}
+
 
 
